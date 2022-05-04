@@ -1,0 +1,8 @@
+[Gracz]<>-[Nazwa]
+[Gra]<>-[Okno gry]
+[Okno gry]1<>-1[Plansza]
+[Okno gry]1<>-0..42[Krążek]
+[Plansza]1<>-7[Kolumna]
+[Plansza]1<>-6[Wiersz]
+[Serwer]1<>-1[Gra]
+[Serwer]1<>-jest połączony z 1..2[Gracz]
