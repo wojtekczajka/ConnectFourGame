@@ -1,5 +1,6 @@
 package com.example.connect4;
 
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,6 +12,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ public class Connect4App extends Application {
     private boolean move = true;
     private Disc[][] dyski = new Disc[COLUMNS][ROWS];
 
+    private Pane discRoot = new Pane();
+
     private static class Disc extends Circle {
         private final boolean color;
 
@@ -40,6 +44,8 @@ public class Connect4App extends Application {
 
     private Parent createBoard() {
         Pane root = new Pane();
+        root.getChildren().add(discRoot);
+
         Shape grid = createGrid();
         root.getChildren().add(grid);
         root.getChildren().addAll(makeChoiceLight());
@@ -91,12 +97,64 @@ public class Connect4App extends Application {
             rect.setOnMouseExited(e -> rect.setFill(Color.TRANSPARENT));
 
             final int kolumna = i;
-            //rect.setOnMouseClicked(e -> dropDisc(new Disc(move), kolumna));
+            rect.setOnMouseClicked(e -> dropDisc(new Disc(move), kolumna));
 
             wybor.add(rect);
         }
 
         return wybor;
+    }
+
+    private void dropDisc(Disc disc, int kolumna){
+        int test = 0, i;
+        for (i = ROWS-1; i >= 0; i--){
+            if(getDisc(kolumna,i)==null) {
+                dyski[kolumna][i] = disc;
+                test = 1;
+                break;
+            }
+        }
+
+        if (test == 0) return;
+
+        discRoot.getChildren().add(disc);
+        disc.setTranslateX(kolumna * (TILE + 5) + TILE / 4);
+        move = !move;
+
+        final int wiersz = i;
+
+        //if (gameEnded(kolumna, wiersz2)) gameOver();
+        if (checkTie()) gameTie();
+
+        TranslateTransition animation = new TranslateTransition(Duration.seconds(0.5),disc);
+        animation.setToY(i * (TILE + 5) + TILE / 4);
+        animation.play();
+    }
+
+    /*private boolean gameEnded(int kolumna, int wiersz){
+
+    }*/
+
+    private boolean checkTie(){
+        int test = 0;
+        for (int i = 0; i<COLUMNS; i++){
+            for (int j = 0; j<ROWS; j++){
+                if(dyski[i][j] == null) test = 1;
+            }
+        }
+        return test == 0;
+    }
+
+    private void gameOver(){
+        System.out.println("Wygrał " + (move ? "czerwony!" : "żółty!"));
+    }
+
+    private void gameTie(){
+        System.out.println("Remis!");
+    }
+
+    private Disc getDisc(int kolumna, int wiersz){
+        return dyski[kolumna][wiersz];
     }
 
     @Override
