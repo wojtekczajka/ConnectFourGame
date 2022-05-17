@@ -1,9 +1,0 @@
-Gra Connect Four – Backlog
-
-Wymagania produktu:
-Stworzenie prototypu planszy do gry i żetonów
-Implementacja możliwości stawiania żetonów
-Implementacja wykrycia przez grę wygranej użytkownika
-Implementacja liczenia punktów użytkowników
-Stworzenie finalnych modeli planszy i żetonów
-Implementacja połączenia klient-serwer
