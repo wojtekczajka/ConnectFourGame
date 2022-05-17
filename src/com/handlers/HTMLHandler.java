@@ -4,11 +4,15 @@ public class HTMLHandler {
 		
 	public static String connectFourStartPage(String contextPath) {
 		String url = contextPath + "/xptheme.jpg";
+		String urlForCss = contextPath + "/style.css";
 		String html = 
 				"<html>\n" + 
 				"\n" + 
 				"<head>\n" + 
 				"    <link rel=\"stylesheet\" href=\"https://unpkg.com/xp.css\">\n" + 
+				"    <link rel=\"stylesheet\" href=\""
+				+ urlForCss
+				+ "\">\n" + 
 				"</head>\n" + 
 				"\n" + 
 				"<body style=\"text-align: center; background-image: url(" +
@@ -55,11 +59,15 @@ public class HTMLHandler {
 	
 	public static String connectFourGamePage(String contextPath, int[][] gameBoard) {
 		String url = contextPath + "/xptheme.jpg";
+		String urlForCss = contextPath + "/style.css";
 		String html = 
 				"<html>\n" + 
 				"\n" + 
 				"<head>\n" + 
 				"    <link rel=\"stylesheet\" href=\"https://unpkg.com/xp.css\">\n" + 
+				"    <link rel=\"stylesheet\" href=\""
+				+ urlForCss
+				+ "\">\n" + 
 				"</head>\n" + 
 				"\n" + 
 				"<body style=\"text-align: center; background-image: url(" +
@@ -77,11 +85,22 @@ public class HTMLHandler {
 				"</div>\n" + 
 				"<div class=\"window-body\">";
 		for (int i = 0; i < 6; i++) {
-			html += "<div style=\"width: 910px; height: 120px\">";
+			html += "<div style=\"width: 910px; height: 120px\" class=\"row\">";
 			for(int j = 0; j < 7; j++) {
-				html += "<div style=\"float: left; width: 130; text-align: center; font-size: 50px;\">";
-				html += Integer.toString(gameBoard[i][j]);
-				html += "</div>";
+				html += "<div style=\"float: left; width: 130; text-align: center; font-size: 50px;\" ";
+				if(gameBoard[i][j] == 1) {
+					html += "class=\"playerOne\"";
+							
+				}
+				else if(gameBoard[i][j] == -1) {
+					html += "class=\"playerTwo\"";
+							
+				}
+				else {
+					html += "class=\"empty\"";
+				}
+				//html += Integer.toString(gameBoard[i][j]);
+				html += "></div>";
 			}
 			html += "</div>";
 		}

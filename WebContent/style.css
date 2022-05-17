@@ -1,0 +1,22 @@
+button{
+	background: red;
+}
+
+.row{
+	display: flex;
+}
+
+.empty{
+	background: rgb(255,255,255);
+	background: radial-gradient(circle, rgba(255,255,255,0) 50%, rgba(70,92,252,1) 50%);
+}
+
+.playerOne{
+	background: rgb(252,70,70);
+	background: radial-gradient(circle, rgba(252,70,70,1) 50%, rgba(70,92,252,1) 50%);
+}
+
+.playerTwo{
+	background: rgb(252,70,70);
+	background: radial-gradient(circle, rgba(252,229,70,1) 50%, rgba(70,92,252,1) 50%);
+}
