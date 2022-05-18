@@ -27,6 +27,14 @@ public class Game {
 		}
 	}
 	
+	public void printGameBoard(int[][] gameBoard) {
+		for (int i = 0; i < 6; i++){
+			for(int j = 0; j < 7; j++)
+				System.out.print(gameBoard[i][j]);
+			System.out.println("");
+		}
+	}
+	
 	public int[][] getGameBoard() {
 		return gameBoard;
 	}
@@ -118,9 +126,27 @@ public class Game {
 		for(int k = 0; k < 3; k++) {
 			for (int i = 5, j = 3 + k; j <= 6; i -= 2 - k, j += 3 - k) {
 				for (int l = 0; l < k + 1; l++) {
-					if(gameBoard[i][j] == value && gameBoard[i - l - 1][j - l - 1] == value &&
+					int arr[][] = { 
+							{ 0, 0, 0, 0, 0, 0, 0 },
+							{ 0, 0, 0, 0, 0, 0, 0 },
+							{ 0, 0, 0, 0, 0, 0, 0 },
+							{ 0, 0, 0, 0, 0, 0, 0 },
+							{ 0, 0, 0, 0, 0, 0, 0 },
+							{ 0, 0, 0, 0, 0, 0, 0 },
+							};
+							
+					if(gameBoard[i - l][j - l] == value && gameBoard[i - l - 1][j - l - 1] == value &&
 							gameBoard[i - l - 2][j - l - 2] == value && gameBoard[i - l - 3][j - l - 3] == value)
 						return true;
+					
+					arr[i -l][j - l] = 1;
+					arr[i - l - 1][j - l - 1] = 1;
+					arr[i - l - 2][j - l - 2] = 1;
+					arr[i - l - 3][j - l - 3] = 1;
+					
+					printGameBoard(arr);
+					System.out.println("");
+					
 				}
 			}
 		}
