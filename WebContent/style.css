@@ -1,12 +1,27 @@
-button{
-	background: red;
+body{
+	background: #F3ECFF; 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.window{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	flex-direction: column;
+	align-items: center;
 }
 
 .row{
 	display: flex;
+	width: 100%;
 }
 
 .empty{
+	width: calc(100%/7);
+	height: 14vh;
 	background: rgb(255,255,255);
 	background: radial-gradient(circle, rgba(255,255,255,0) 50%, rgba(70,92,252,1) 50%);
 }

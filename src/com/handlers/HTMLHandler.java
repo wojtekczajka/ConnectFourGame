@@ -9,7 +9,6 @@ public class HTMLHandler {
 				"<html>\n" + 
 				"\n" + 
 				"<head>\n" + 
-				"    <link rel=\"stylesheet\" href=\"https://unpkg.com/xp.css\">\n" + 
 				"    <link rel=\"stylesheet\" href=\""
 				+ urlForCss
 				+ "\">\n" + 
@@ -21,12 +20,7 @@ public class HTMLHandler {
 				"<div id=\"popInfoWindow\"></div>" +
 				"<div class=\"window\" style=\"width: 400px; height: 230px; margin: auto; margin-top: 200px\">\n" + 
 				"<div class=\"title-bar\">\n" + 
-				"<div class=\"title-bar-text\">Connect Four Game</div>\n" + 
-				"<div class=\"title-bar-controls\">\n" + 
-				"<button aria-label=\"Minimize\"></button>\n" + 
-				"<button aria-label=\"Maximize\"></button>\n" + 
-				"<button aria-label=\"Close\"></button>\n" + 
-				"</div>\n" + 
+				"<div class=\"title-bar-text\">Connect Four Game</div>\n" +  
 				"</div>\n" + 
 				"<div class=\"window-body\">\n" + 
 				"<div class=\"field-row-stacked\" style=\"width: 200px; margin: auto\">\n" + 
@@ -58,36 +52,28 @@ public class HTMLHandler {
 	}
 	
 	public static String connectFourGamePage(String contextPath, int[][] gameBoard) {
-		String url = contextPath + "/xptheme.jpg";
+		//String url = contextPath + "/xptheme.jpg";
 		String urlForCss = contextPath + "/style.css";
 		String html = 
 				"<html>\n" + 
 				"\n" + 
 				"<head>\n" + 
-				"    <link rel=\"stylesheet\" href=\"https://unpkg.com/xp.css\">\n" + 
 				"    <link rel=\"stylesheet\" href=\""
 				+ urlForCss
 				+ "\">\n" + 
 				"</head>\n" + 
 				"\n" + 
-				"<body style=\"text-align: center; background-image: url(" +
-				url +
-				");\">" +
+				"<body>" +
 				"<div>Make a move...</div>" +
-				"<div class=\"window\" style=\"width: 910px; height: 800px; margin: auto; margin-top: 60px\">\n" + 
+				"<div class=\"window\" >\n" + 
 				"<div class=\"title-bar\">\n" + 
 				"<div class=\"title-bar-text\">Connect Four Game</div>\n" + 
-				"<div class=\"title-bar-controls\">\n" + 
-				"<button aria-label=\"Minimize\"></button>\n" + 
-				"<button aria-label=\"Maximize\"></button>\n" + 
-				"<button aria-label=\"Close\"></button>\n" + 
-				"</div>\n" + 
 				"</div>\n" + 
 				"<div class=\"window-body\">";
 		for (int i = 0; i < 6; i++) {
-			html += "<div style=\"width: 910px; height: 120px\" class=\"row\">";
+			html += "<div class=\"row\">";
 			for(int j = 0; j < 7; j++) {
-				html += "<div style=\"float: left; width: 130; text-align: center; font-size: 50px;\" ";
+				html += "<div ";
 				if(gameBoard[i][j] == 1) {
 					html += "class=\"playerOne\"";
 							
@@ -105,7 +91,7 @@ public class HTMLHandler {
 			html += "</div>";
 		}
 		
-		html += "<div style=\"width: 910px; height: 50px\">";
+		html += "<div>";
 		html += "<form action=\"servlet2\">  \n";
 		for (int i = 0; i < 7; i++) {
 			String value = Integer.toString(i);
