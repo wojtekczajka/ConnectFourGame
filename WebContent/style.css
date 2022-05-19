@@ -1,9 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
 body{
 	background: #F3ECFF; 
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	font-family: 'Roboto', sans-serif;
+	margin: 0;
+}
+
+.hello-window{
+	flex-direction: row;
+}
+
+.title-bar{
+	width: 45vw;
+	height: 20vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 5vw;
+}
+
+.title-bar-game{
+	height:5vh;
+}
+
+.title-bar-game-text{
+	font-size: 2vw;
+}
+
+.main-window{
+	width: 20vw!important;
+}
+
+.main-window div{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+button{
+	border: 1px solid grey;
+	border-radius: 10px;
+	background-color: transparent;
+	font-family: 'Roboto', sans-serif;
+	font-size: 1.5vw;
+}
+
+.main-window button{
+	
+	width: 15vw;
+	margin: 1vw;
+	
+}
+
+.field-row-stacked input{
+	border-radius: 10px;
+	background-color: transparent;
+	border: 1px solid grey;
+	width: 80%;
+}
+
+.field-row-stacked label{
+	margin-right: 0.5vw;
+	
 }
 
 .window{
@@ -14,9 +75,33 @@ body{
 	align-items: center;
 }
 
+.window-body{
+	display: flex;
+	justify-content: center;
+	width: 60vw;
+	flex-wrap: wrap;
+}
+
 .row{
 	display: flex;
+	width: 60vw;
+}
+
+.buttons{
+	display: flex;
+	justify-content: center;
 	width: 100%;
+}
+
+form{
+	display: flex;
+	width: 100%;
+	margin: 0;
+}
+
+.buttons button{
+	width: 100%;
+	margin: 1vw;
 }
 
 .empty{
@@ -27,11 +112,15 @@ body{
 }
 
 .playerOne{
+	width: calc(100%/7);
+	height: 14vh;
 	background: rgb(252,70,70);
 	background: radial-gradient(circle, rgba(252,70,70,1) 50%, rgba(70,92,252,1) 50%);
 }
 
 .playerTwo{
+	width: calc(100%/7);
+	height: 14vh;
 	background: rgb(252,70,70);
 	background: radial-gradient(circle, rgba(252,229,70,1) 50%, rgba(70,92,252,1) 50%);
 }

@@ -3,7 +3,7 @@ package com.handlers;
 public class HTMLHandler {
 		
 	public static String connectFourStartPage(String contextPath) {
-		String url = contextPath + "/xptheme.jpg";
+		//String url = contextPath + "/xptheme.jpg";
 		String urlForCss = contextPath + "/style.css";
 		String html = 
 				"<html>\n" + 
@@ -14,27 +14,25 @@ public class HTMLHandler {
 				+ "\">\n" + 
 				"</head>\n" + 
 				"\n" + 
-				"<body style=\"text-align: center; background-image: url(" +
-				url +
-				");\">" + 
-				"<div id=\"popInfoWindow\"></div>" +
-				"<div class=\"window\" style=\"width: 400px; height: 230px; margin: auto; margin-top: 200px\">\n" + 
+				"<body class=\"hello-window\">" + 
+				"<div class=\"window\">\n" + 
 				"<div class=\"title-bar\">\n" + 
 				"<div class=\"title-bar-text\">Connect Four Game</div>\n" +  
 				"</div>\n" + 
-				"<div class=\"window-body\">\n" + 
-				"<div class=\"field-row-stacked\" style=\"width: 200px; margin: auto\">\n" + 
+				"<div class=\"window-body main-window\">\n" + 
+				"<div class=\"field-row-stacked\">\n" + 
 				"<form action=\"servlet1\">  \n" +
 				"<label for=\"login\">Login</label>\n" + 
 				"<input name=\"userLogin\" type=\"text\" />\n" + 
 				"</div>\n" + 
-				"<div style=\"margin: auto; text-align: center;\">\n" + 
-				"<button style=\"width:200px; margin-top: 20px\" type=\"submit\" name=\"gameChoice\" value=\"SinglePlayer\">Single-Player</button>\n" + 
+				"<div>\n" + 
+				"<button type=\"submit\" name=\"gameChoice\" value=\"SinglePlayer\">Single-Player</button>\n" + 
 				"</div>\n" + 
-				"<div style=\"margin: auto; text-align: center;\">\n" + 
-				"<button onclick=\"myFunction()\" style=\"width:200px; margin-top: 20px\" type=\"submit\" name=\"gameChoice\" value=\"MultiPlayer\">2Players-Online</button>\n" +
-				"<div style=\"margin: auto; text-align: center;\">\n" + 
-				"<button style=\"width:200px; margin-top: 20px\" type=\"submit\" name=\"gameChoice\" value=\"MultiPlayerLocally\">2Players-Locally</button>\n" + 
+				"<div>\n" + 
+				"<button onclick=\"myFunction()\" type=\"submit\" name=\"gameChoice\" value=\"MultiPlayer\">2Players-Online</button>\n" +
+				"</div>" +
+				"<div>\n" + 
+				"<button type=\"submit\" name=\"gameChoice\" value=\"MultiPlayerLocally\">2Players-Locally</button>\n" + 
 				"</div>\n" + 
 				"</form>  \n" +
 				"</div>\n" + 
@@ -51,7 +49,7 @@ public class HTMLHandler {
 		return html;
 	}
 	
-	public static String connectFourGamePage(String contextPath, int[][] gameBoard) {
+	public static String connectFourGamePage(String contextPath, String userName, int[][] gameBoard) {
 		//String url = contextPath + "/xptheme.jpg";
 		String urlForCss = contextPath + "/style.css";
 		String html = 
@@ -66,8 +64,10 @@ public class HTMLHandler {
 				"<body>" +
 				"<div>Make a move...</div>" +
 				"<div class=\"window\" >\n" + 
-				"<div class=\"title-bar\">\n" + 
-				"<div class=\"title-bar-text\">Connect Four Game</div>\n" + 
+				"<div class=\"title-bar title-bar-game\">\n" + 
+				"<div class=\"title-bar-text title-bar-game-text\">Connect Four Game welcome "
+				+ userName
+				+ "</div>\n" + 
 				"</div>\n" + 
 				"<div class=\"window-body\">";
 		for (int i = 0; i < 6; i++) {
@@ -91,11 +91,11 @@ public class HTMLHandler {
 			html += "</div>";
 		}
 		
-		html += "<div>";
+		html += "<div class=\"buttons\">";
 		html += "<form action=\"servlet2\">  \n";
 		for (int i = 0; i < 7; i++) {
 			String value = Integer.toString(i);
-			html += "<button style=\"float: left; width:130\" type=\"submit\" name=\"colChoice\" value=\"" + value + "\">";
+			html += "<button type=\"submit\" name=\"colChoice\" value=\"" + value + "\">";
 			html += value;
 			html += "</button>";
 		}

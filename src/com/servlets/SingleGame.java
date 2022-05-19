@@ -77,8 +77,7 @@ public class SingleGame extends HttpServlet {
 		     else if (userGame.isWin(1)) 
 		    	 out.println(HTMLHandler.infoPage(request.getContextPath(), "You win, congrats :)"));
 		     else {
-		    	 out.println(userLogin);
-		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), userGame.getGameBoard()));
+		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), userLogin, userGame.getGameBoard()));
 		     }
 		     out.close();
             
