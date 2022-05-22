@@ -29,13 +29,12 @@ public class SingleGame extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public SingleGame() {
-    	
     	super();
     	games = new TreeMap<>();
     }
     
-    public boolean isExistingGame(String userLogin) {
-    	if(games.get(userLogin) == null)
+    public boolean isExistingGame(String gameID) {
+    	if(games.get(gameID) == null)
     		return false;
     	return true;
     }
@@ -59,25 +58,39 @@ public class SingleGame extends HttpServlet {
 		  
 		     HttpSession session = request.getSession(false);
 		  
-		     String userLogin = (String)session.getAttribute("userLogin");
-		     String gameChoice = (String)session.getAttribute("gameChoice");
+		     String userLogin = (String) session.getAttribute("userLogin");
+		     String gameID = (String) session.getAttribute("gameID");
 		     String colChoice = request.getParameter("colChoice");
 
-		     if (!isExistingGame(userLogin))
-		    	 putNewGame(userLogin);
-		     Game userGame = getGame(userLogin);
+		     if (!isExistingGame(gameID))
+		    	 putNewGame(gameID);
+		     Game userGame = getGame(gameID);
 		     
 		     if (colChoice != null) {
-		    	 userGame.makeMove(Integer.valueOf(colChoice), 1);
+		    	 if (userGame.makeMove(Integer.valueOf(colChoice), 1) == 0) {
+		    		 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong move, repeat again", "servlet5", userGame.getGameBoard(), false));
+		    		 out.close();
+		    		 return;
+		    	 }
+		    		 
 		    	 userGame.makeRandomMove(-1);
 		     }
 		     
-		     if (userGame.isWin(-1)) 
-		    	 out.println(HTMLHandler.infoPage(request.getContextPath(), "You lost don't worry :)"));
-		     else if (userGame.isWin(1)) 
-		    	 out.println(HTMLHandler.infoPage(request.getContextPath(), "You win, congrats :)"));
+		     if (userGame.isWin(1)) {
+		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You win", "servlet5", userGame.getGameBoard(), true));
+		    	 games.remove(userLogin);
+		    	 
+		     }
+		     else if (userGame.isWin(-1)) {
+		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "CPU win", "servlet5", userGame.getGameBoard(), true));
+		    	 games.remove(userLogin);
+		     }
+		     else if (userGame.isGameBoardFull()) {
+		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Draw", "servlet5", userGame.getGameBoard(), true));
+		    	 games.remove(userLogin);
+		     }
 		     else {
-		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), userLogin, userGame.getGameBoard()));
+		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You are playing against the computer", "servlet2", userGame.getGameBoard(), false));
 		     }
 		     out.close();
             

@@ -115,12 +115,27 @@ form{
 	width: calc(100%/7);
 	height: 14vh;
 	background: rgb(252,70,70);
-	background: radial-gradient(circle, rgba(252,70,70,1) 50%, rgba(70,92,252,1) 50%);
+	background: radial-gradient(circle, rgba(252,70,70, 0.7) 50%, rgba(70,92,252,1) 50%);
 }
 
 .playerTwo{
 	width: calc(100%/7);
 	height: 14vh;
 	background: rgb(252,70,70);
+	background: radial-gradient(circle, rgba(252,229,70,0.7) 50%, rgba(70,92,252,1) 50%);
+}
+
+.playerOneWin{
+	width: calc(100%/7);
+	height: 14vh;
+	background: rgb(252,70,70);
+	background: radial-gradient(circle, rgba(252,70,70,1) 50%, rgba(70,92,252,1) 50%);
+}
+
+.playerTwoWin{
+	width: calc(100%/7);
+	height: 14vh;
+	background: rgb(252,70,70);
 	background: radial-gradient(circle, rgba(252,229,70,1) 50%, rgba(70,92,252,1) 50%);
 }
+

@@ -21,15 +21,15 @@ import com.handlers.HTMLHandler;
  */
 @WebServlet("/OnlineGame")
 public class OnlineGame extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
-	private Map<String, Game> games = new TreeMap<>();
-	private int x = 0;
+	private Map<String, Game> games;
     /**
      * @see HttpServlet#HttpServlet()
      */
     public OnlineGame() {
         super();
-        // TODO Auto-generated constructor stub
+        games = new TreeMap<>();
     }
     
     public boolean isExistingGame(String gameID) {
@@ -72,6 +72,8 @@ public class OnlineGame extends HttpServlet {
 		String userLogin = (String) session.getAttribute("userLogin");
 		String startingPlayerLogin = (String) session.getAttribute("startingPlayer");
 		Game currentGame;
+		String player1Login = "kkk";
+		String player2Login = "ddd";
 		
 		if (!isExistingGame(gameID)) 
 			currentGame = putNewGame(gameID);
@@ -85,7 +87,8 @@ public class OnlineGame extends HttpServlet {
 				session.setAttribute("updateGameBoard", "false");
 				currentGame.player1 = session;
 			}
-		} else {
+		} 
+		else {
 			if (!isGameSet(currentGame)) {
 				session.setAttribute("showGameBoard", "false");
 				session.setAttribute("updateGameBoard", "false");
@@ -96,17 +99,31 @@ public class OnlineGame extends HttpServlet {
 		while (true) {
 			if (userLogin != startingPlayerLogin) {
 				if (currentGame.player2.getAttribute("updateGameBoard").equals("true")) {
-					System.out.println("player2 pierwszy if");
-					currentGame.makeMove(Integer.valueOf(colChoice), -1);
+					
+					if (currentGame.makeMove(Integer.valueOf(colChoice), -1) == 0) {
+						out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong move, repeat again", "servlet4", currentGame.getGameBoard(), false));
+			    		out.close();
+			    		return;
+					}
+					
 					currentGame.player2.setAttribute("updateGameBoard", "false");
 					currentGame.player1.setAttribute("showGameBoard", "true");
-					System.out.println("tututu:" + currentGame.player1.getAttribute("showGameBoard"));
+					
+					if (currentGame.isWin(-1)) {
+						out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You won!", "servlet5", currentGame.getGameBoard(), true));
+			    		out.close();
+			    		return;
+					}
 				}
 				if (currentGame.player2.getAttribute("showGameBoard").equals("true")) {
-					System.out.println("player2 drugi if");
+					if (currentGame.isWin(1)) {
+						out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "You lost, " + player1Login + "win", "servlet5", currentGame.getGameBoard(), true));
+						out.close();
+						return;
+					}
 					currentGame.player2.setAttribute("updateGameBoard", "true");
 					currentGame.player2.setAttribute("showGameBoard", "false");
-					out.println(HTMLHandler.connectFourMultiGamePage(request.getContextPath(), currentGame.getGameBoard()));
+					out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Playing against " + player1Login, "servlet4", currentGame.getGameBoard(), false));
 					out.close();
 					return;
 				}
@@ -114,16 +131,30 @@ public class OnlineGame extends HttpServlet {
 			else {
 				System.out.println(currentGame.player1.getAttribute("showGameBoard"));
 				if (currentGame.player1.getAttribute("updateGameBoard").equals("true")) {
-					System.out.println("player1 pierwszy if");
-					currentGame.makeMove(Integer.valueOf(colChoice), 1);
+					if (currentGame.makeMove(Integer.valueOf(colChoice), 1) == 0) {
+						out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong move, repeat again", "servlet4", currentGame.getGameBoard(), false));
+			    		out.close();
+			    		return;
+					}
+					
 					currentGame.player1.setAttribute("updateGameBoard", "false");
 					currentGame.player2.setAttribute("showGameBoard", "true");
+					
+					if (currentGame.isWin(1)) {
+						out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You won!", "servlet5", currentGame.getGameBoard(), true));
+			    		out.close();
+			    		return;
+					}
 				}
 				if (currentGame.player1.getAttribute("showGameBoard").equals("true")) {
-					System.out.println("player1 drugi if");
+					if (currentGame.isWin(-1)) {
+						out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "You lost, " + player2Login + "win", "servlet5", currentGame.getGameBoard(), true));
+						out.close();
+						return;
+					}
 					currentGame.player1.setAttribute("updateGameBoard", "true");
 					currentGame.player1.setAttribute("showGameBoard", "false");
-					out.println(HTMLHandler.connectFourMultiGamePage(request.getContextPath(), currentGame.getGameBoard()));
+					out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Playing against " + player2Login, "servlet4", currentGame.getGameBoard(), false));
 					out.close();
 					return;
 				}
@@ -136,34 +167,7 @@ public class OnlineGame extends HttpServlet {
 			}
 			
 			
-		}
-		
-		
-//		while (true) {
-//			if (userLogin == startingPlayerLogin) {
-//				if (session.getAttribute("move").equals("true") && currentGame.player2.getAttribute("move").equals("false")) {
-//					System.out.println("if dla plejera pierwszego do zrobienia ruchu");
-//					out.println(HTMLHandler.connectFourMultiGamePage(request.getContextPath(), currentGame.getGameBoard()));
-//					out.close();
-//					session.setAttribute("move", "false");
-//					session.setAttribute("sendResponse", "false");
-//					currentGame.player1 = session;
-//					return;
-//				}
-//				if (session.getAttribute("move").equals("false") && session.getAttribute("sendResponse").equals("true")) {
-//					System.out.println("drugi if dla plejera pierwszego do zrobienia ruchu");
-//					session.setAttribute("move", "false");
-//					session.setAttribute("sendResponse", "false");
-//					currentGame.makeMove(Integer.valueOf(colChoice), 1);
-//				}
-//			}
-//			else {
-//				if (session.getAttribute("move").equals("true") && currentGame.player1.getAttribute("move").equals("false")) {
-//					
-//				}
-//			}
-//		}
-		
+		}	
 	}
 
 	/**

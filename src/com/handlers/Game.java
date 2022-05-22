@@ -87,8 +87,16 @@ public class Game {
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j < 3; j++) {
 				if (gameBoard[j][i] == value && gameBoard[j + 1][i] == value 
-						&& gameBoard[j + 2][i] == value && gameBoard[j + 3][i] == value)
+						&& gameBoard[j + 2][i] == value && gameBoard[j + 3][i] == value) {
+					if (value == 1) {
+					gameBoard[j][i] = 2; gameBoard[j + 1][i] = 2; gameBoard[j + 2][i] = 2; gameBoard[j + 3][i] = 2;
+					}
+					else {
+						gameBoard[j][i] = -2; gameBoard[j + 1][i] = -2; gameBoard[j + 2][i] = -2; gameBoard[j + 3][i] = -2;
+					}
+					System.out.println("tu nie dzial1");
 					return true;
+				}
 			}
 		}
 		return false;
@@ -98,8 +106,16 @@ public class Game {
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 4; j++) {
 				if (gameBoard[i][j] == value && gameBoard[i][j + 1] == value && 
-						gameBoard[i][j + 2] == value && gameBoard[i][j + 3] == value)
+						gameBoard[i][j + 2] == value && gameBoard[i][j + 3] == value) {
+					if (value == 1) {
+						gameBoard[i][j] = 2; gameBoard[i][j + 1] = 2; gameBoard[i][j + 2] = 2; gameBoard[i][j + 3] = 2;
+						}
+					else {
+						gameBoard[i][j] = -2; gameBoard[i][j + 1] = -2; gameBoard[i][j + 2] = -2; gameBoard[i][j + 3] = -2;
+						}
+					System.out.println("tu nie dzial2");
 					return true;
+				}
 			}
 		}
 		return false;
@@ -114,8 +130,16 @@ public class Game {
             for(int i = 3 + k, j = 0; j <= 3 - k; i += 2 - k, j += 3 - k) {
                 for (int l = 0; l < k + 1; l++) {
                 	if (gameBoard[i - l][j + l] == value && gameBoard[i - 1 - l][j + 1 + l] == value &&
-                			gameBoard[i - 2 - l][j + 2 + l] == value && gameBoard[i - 3 - l][j + 3 + l] == value)
+                			gameBoard[i - 2 - l][j + 2 + l] == value && gameBoard[i - 3 - l][j + 3 + l] == value) {
+                		if (value == 1) {
+                			gameBoard[i - l][j + l] = 2; gameBoard[i - 1 - l][j + 1 + l] = 2; gameBoard[i - 2 - l][j + 2 + l] = 2; gameBoard[i - 3 - l][j + 3 + l] = 2;
+                		}
+                		else {
+                			gameBoard[i - l][j + l] = -2; gameBoard[i - 1 - l][j + 1 + l] = -2; gameBoard[i - 2 - l][j + 2 + l] = -2; gameBoard[i - 3 - l][j + 3 + l] = -2;
+                		}
                 		return true;
+                	}
+                		
                 }
             }
         }
@@ -125,28 +149,17 @@ public class Game {
 	public boolean isWinSecondDiagonall(int value) {
 		for(int k = 0; k < 3; k++) {
 			for (int i = 5, j = 3 + k; j <= 6; i -= 2 - k, j += 3 - k) {
-				for (int l = 0; l < k + 1; l++) {
-					int arr[][] = { 
-							{ 0, 0, 0, 0, 0, 0, 0 },
-							{ 0, 0, 0, 0, 0, 0, 0 },
-							{ 0, 0, 0, 0, 0, 0, 0 },
-							{ 0, 0, 0, 0, 0, 0, 0 },
-							{ 0, 0, 0, 0, 0, 0, 0 },
-							{ 0, 0, 0, 0, 0, 0, 0 },
-							};
-							
+				for (int l = 0; l < k + 1; l++) {	
 					if(gameBoard[i - l][j - l] == value && gameBoard[i - l - 1][j - l - 1] == value &&
-							gameBoard[i - l - 2][j - l - 2] == value && gameBoard[i - l - 3][j - l - 3] == value)
-						return true;
-					
-					arr[i -l][j - l] = 1;
-					arr[i - l - 1][j - l - 1] = 1;
-					arr[i - l - 2][j - l - 2] = 1;
-					arr[i - l - 3][j - l - 3] = 1;
-					
-					printGameBoard(arr);
-					System.out.println("");
-					
+							gameBoard[i - l - 2][j - l - 2] == value && gameBoard[i - l - 3][j - l - 3] == value) {
+						if (value == 1) {
+							gameBoard[i - l][j - l] = 2; gameBoard[i - l - 1][j - l - 1] = 2; gameBoard[i - l - 2][j - l - 2] = 2; gameBoard[i - l - 3][j - l - 3] = 2;
+						}
+						else {
+							gameBoard[i - l][j - l] = -2; gameBoard[i - l - 1][j - l - 1] = -2; gameBoard[i - l - 2][j - l - 2] = -2; gameBoard[i - l - 3][j - l - 3] = -2;
+						}
+						return true;		
+					}
 				}
 			}
 		}

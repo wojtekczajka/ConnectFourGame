@@ -40,6 +40,16 @@
 <servlet-name>s4</servlet-name>  
 <url-pattern>/servlet4</url-pattern>  
 </servlet-mapping> 
+
+<servlet>  
+<servlet-name>s5</servlet-name>  
+<servlet-class>com.servlets.StartConnectFour</servlet-class>  
+</servlet>
+  
+<servlet-mapping>  
+<servlet-name>s5</servlet-name>  
+<url-pattern>/servlet5</url-pattern>  
+</servlet-mapping>  
  
 </web-app> 
 
