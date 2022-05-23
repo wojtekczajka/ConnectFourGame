@@ -8,7 +8,7 @@ public class GameTests {
 
 	@Test
 	public void testIsWinVertically() {
-		Game game = new Game();
+		GameHandler game = new GameHandler();
 		int[][] testArray1 = { 
 				{ 0, 0, 0, 0, 0, 0, 0 },
 				{ 1, 0, 0, 0, 0, 0, 0 },
@@ -67,7 +67,7 @@ public class GameTests {
 
 	@Test
 	public void testIsWinHorizontally() {
-		Game game = new Game();
+		GameHandler game = new GameHandler();
 		int[][] testArray1 = { 
 				{ 0, 0, 0, 0, 0, 0, 0 },
 				{ 1, 0, 0, 0, 0, 0, 0 },
@@ -120,7 +120,7 @@ public class GameTests {
 //
 	@Test
 	public void testIsWinFirstDiagonall() {
-		Game game = new Game();
+		GameHandler game = new GameHandler();
 		int[][] testArray1 = { 
 				{ 0, 0, 0, 1, 0, 0, 0 },
 				{ 0, 0, 1, 0, 0, 0, 0 },
@@ -146,7 +146,7 @@ public class GameTests {
 	
 	@Test
 	public void testIsColumnFull() {
-		Game game = new Game();
+		GameHandler game = new GameHandler();
 		int[][] testArray1 = { 
 				{ 0, 1, 0, 1, 0, 0, 0 },
 				{ 0, 1, 1, 0, 0, 0, 0 },
@@ -194,7 +194,7 @@ public class GameTests {
 	
 	@Test
 	public void testIsGameBoardFull() {
-		Game game = new Game();
+		GameHandler game = new GameHandler();
 		int[][] testArray1 = { 
 				{ 1, 1, 1, 1, 1, 1, 1 },
 				{ 1, 1, 1, 1, 1, 1, 1 },
@@ -220,7 +220,7 @@ public class GameTests {
 	
 	@Test
 	public void testMakeMove() {
-		Game game = new Game();
+		GameHandler game = new GameHandler();
 		int[][] testArray1 = { 
 				{ 0, 0, 0, 1, 1, 0, 1 },
 				{ 1, 1, 1, 1, 1, 1, 1 },
@@ -283,7 +283,7 @@ public class GameTests {
 	
 	@Test
 	public void testIsWin() {
-		Game game = new Game();
+		GameHandler game = new GameHandler();
 		int[][] testArray1 = { 
 				{ 1, 1, 1, 1, 1, 1, 1 },
 				{ 1, 1, 1, 1, 1, 1, 1 },
@@ -342,7 +342,7 @@ public class GameTests {
 
 	@Test
 	public void testIsWinDiagonally() {
-		Game game = new Game();
+		GameHandler game = new GameHandler();
 		int[][] testArray1 = { 
 				{ 1, 1, 1, 1, 1, 1, 1 },
 				{ 1, 1, 1, 1, 1, 1, 1 },

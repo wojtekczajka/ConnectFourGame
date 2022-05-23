@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.handlers.Game;
+import com.handlers.GameHandler;
 import com.handlers.HTMLHandler;
 
 /**
@@ -23,7 +23,7 @@ import com.handlers.HTMLHandler;
 public class LocalGame extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	private Map<String, Game> games;
+	private Map<String, GameHandler> games;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -39,10 +39,10 @@ public class LocalGame extends HttpServlet {
     }
     
     public void putNewGame(String userLogin) {
-    	games.put(userLogin, new Game());
+    	games.put(userLogin, new GameHandler());
     }
     
-    public Game getGame(String userLogin) {
+    public GameHandler getGame(String userLogin) {
     	return games.get(userLogin);
     }
     
@@ -66,7 +66,7 @@ public class LocalGame extends HttpServlet {
 	    
 	    if (!isExistingGame(gameID))
 	    	 putNewGame(gameID);
-	    Game userGame = getGame(gameID);
+	    GameHandler userGame = getGame(gameID);
 	    
 	    if (gameState.equals("startNewGame")) {
 	    	session.setAttribute("gameState", "player1Move");

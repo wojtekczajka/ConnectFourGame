@@ -1,19 +1,9 @@
 package com.handlers;
+
 import java.util.Random;
 
-import javax.servlet.http.HttpSession;
-
-public class Game {
+public class GameHandler {
 	private int[][] gameBoard = new int[6][7];
-	public HttpSession player1;
-	public HttpSession player2;
-	
-	public void setSession(HttpSession session) {
-		if (player1 == null)
-			player1 = session;
-		else
-			player2 = session;
-	}
 	
 	public void setGameBoard(int[][] arr) {
 		this.gameBoard = arr;
