@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.handlers.GameHandler;
+
 public class GameTests {
 
 	@Test
@@ -113,11 +115,6 @@ public class GameTests {
 		assertTrue(game.isWinHorizontally(1));
 	}
 
-//	@Test
-//	public void testIsWinSecondDiagonall() {
-//		fail("Not yet implemented");
-//	}
-//
 	@Test
 	public void testIsWinFirstDiagonall() {
 		GameHandler game = new GameHandler();
@@ -143,6 +140,7 @@ public class GameTests {
 //		game.setGameBoard(testArray2);
 //		assertTrue(game.isWinFirstDiagonall(2));
 	}
+	
 	
 	@Test
 	public void testIsColumnFull() {
@@ -364,6 +362,66 @@ public class GameTests {
 				};
 		game.setGameBoard(testArray2);
 		assertFalse(game.isWinDiagonally(1));
+		
+		int[][] testArray3 = { 
+				{ 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 1, 0, -1, 0, 0, 0 },
+				{ 0, 0, 1, 0, -1, 0, 0 },
+				{ 0, 1, 0, 0, 0, -1, 0 },
+				{ 1, 0, 0, 0, 0, 0, -1 },
+				{ 0, 0, 0, 1, 0, 0, 0 },
+				};
+		game.setGameBoard(testArray3);
+		assertTrue(game.isWinDiagonally(-1));
+		
+		int[][] testArray4 = { 
+				{ 0, 0, 0, 0, 1, 0, 0 },
+				{ 0, 1, 0, 0, 1, -1, 0 },
+				{ 0, 0, -1, 0, 1, 0, 0 },
+				{ 0, 0, 0, 1, 0, 0, 0 },
+				{ 0, 0, -1, 1, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0 },
+				};
+		game.setGameBoard(testArray4);
+		assertFalse(game.isWinDiagonally(-1));
 	}
+	
+	@Test
+	public void testIsWinSecondDiagonall() {
+		GameHandler game = new GameHandler();
+		int[][] testArray1 = { 
+				{ 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 1, 1, 0, 0, 0, 0 },
+				{ 0, 1, 1, 0, 0, 0, 0 },
+				{ 1, 0, 0, 1, 0, 0, 0 },
+				{ 0, 0, 0, 0, 1, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0 },
+				};
+		game.setGameBoard(testArray1);
+		assertTrue(game.isWinSecondDiagonall(1));
+		
+		int[][] testArray2 = { 
+				{ 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 1, 1, 0, 0, 0, 0 },
+				{ 0, 1, 1, -1, 0, 0, 0 },
+				{ 1, 0, 0, 1, -1, 0, 0 },
+				{ 0, 0, 0, 0, 1, -1, 0 },
+				{ 0, 0, 0, 0, 0, 1, -1 },
+				};
+		game.setGameBoard(testArray2);
+		assertTrue(game.isWinSecondDiagonall(-1));
+		
+		int[][] testArray3 = { 
+				{ 0, 0, 0, 1, 0, 0, 0 },
+				{ 0, 0, 1, 0, 0, 0, 0 },
+				{ 0, 1, 1, 0, 0, 0, 0 },
+				{ 1, 0, 0, 1, 0, 0, 0 },
+				{ 0, 0, 0, 0, 1, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0 },
+				};
+		game.setGameBoard(testArray3);
+		assertFalse(game.isWinSecondDiagonall(1));
+	}
+	
 	
 }
