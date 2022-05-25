@@ -73,7 +73,11 @@ public class SingleGame extends HttpServlet {
 		    		 return;
 		    	 }
 		    		 
-		    	 userGame.makeRandomMove(-1);
+		    	 if (userGame.makeRandomMove(-1) == 0) {
+		    		 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Draw", "servlet5", userGame.getGameBoard(), true));
+			    	 games.remove(userLogin);
+			    	 return;
+		    	 }
 		     }
 		     
 		     if (userGame.isWin(1)) {

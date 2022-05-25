@@ -11,6 +11,7 @@ public class SessionHandler {
 	}
 	
 	public void setSession(HttpSession session) {
+		System.out.println(this.session = null);
 		this.session = session;
 	}
 	

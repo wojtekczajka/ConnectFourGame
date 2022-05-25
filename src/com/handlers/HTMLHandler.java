@@ -29,7 +29,7 @@ public class HTMLHandler {
 				"<button type=\"submit\" name=\"gameChoice\" value=\"SinglePlayer\">Single-Player</button>\n" + 
 				"</div>\n" + 
 				"<div>\n" + 
-				"<button onclick=\"myFunction()\" type=\"submit\" name=\"gameChoice\" value=\"MultiPlayer\">2Players-Online</button>\n" +
+				"<button onclick=\"myFunction()\" type=\"submit\" name=\"gameChoice\" value=\"MultiPlayer\">2Players-Online (not working yet)</button>\n" +
 				"</div>" +
 				"<div>\n" + 
 				"<button type=\"submit\" name=\"gameChoice\" value=\"MultiPlayerLocally\">2Players-Locally</button>\n" + 

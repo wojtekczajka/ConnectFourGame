@@ -73,14 +73,14 @@ public class OnlineGame extends HttpServlet {
 		
 		if (userLogin == startingPlayerLogin) {
 			System.out.println("co ja robie tu");
-			if (currentGame.isSet()) {
+			if (!currentGame.isSet()) {
 				session.setAttribute("showGameBoard", "true");
 				session.setAttribute("updateGameBoard", "false");
 				currentGame.setPlayer(session, OnlineGameHandler.FIRST_PLAYER);
 			}
 		} 
 		else {
-			if (currentGame.isSet()) {
+			if (!currentGame.isSet()) {
 				session.setAttribute("showGameBoard", "false");
 				session.setAttribute("updateGameBoard", "false");
 				currentGame.setPlayer(session, OnlineGameHandler.SECOND_PLAYER);
@@ -90,6 +90,13 @@ public class OnlineGame extends HttpServlet {
 		while (true) {
 			if (userLogin != startingPlayerLogin) {
 				if (currentGame.isReadyToUpdate(OnlineGameHandler.SECOND_PLAYER)) {
+					
+					if (currentGame.isWin(1)) {
+						out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "You lost, " + player1Login + "win", "servlet5", currentGame.getGameBoard(), true));
+						out.close();
+						games.remove(gameID);
+						return;
+					}
 					
 					if (currentGame.makeMove(Integer.valueOf(colChoice), -1) == 0) {
 						out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong move, repeat again", "servlet4", currentGame.getGameBoard(), false));
@@ -103,13 +110,16 @@ public class OnlineGame extends HttpServlet {
 					if (currentGame.isWin(-1)) {
 						out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You won!", "servlet5", currentGame.getGameBoard(), true));
 			    		out.close();
+			    		games.remove(gameID);
 			    		return;
 					}
 				}
 				if (currentGame.isReadyToShow(OnlineGameHandler.SECOND_PLAYER)) {
+					
 					if (currentGame.isWin(1)) {
 						out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "You lost, " + player1Login + "win", "servlet5", currentGame.getGameBoard(), true));
 						out.close();
+						games.remove(gameID);
 						return;
 					}
 					
@@ -123,9 +133,18 @@ public class OnlineGame extends HttpServlet {
 			}
 			else {
 				if (currentGame.isReadyToUpdate(OnlineGameHandler.FIRST_PLAYER)) {
+					
+					if (currentGame.isWin(-1)) {
+						out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "You lost, " + player2Login + "win", "servlet5", currentGame.getGameBoard(), true));
+						out.close();
+						games.remove(gameID);
+						return;
+					}
+					
 					if (currentGame.makeMove(Integer.valueOf(colChoice), 1) == 0) {
 						out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong move, repeat again", "servlet4", currentGame.getGameBoard(), false));
 			    		out.close();
+			    		games.remove(gameID);
 			    		return;
 					}
 					
@@ -135,6 +154,7 @@ public class OnlineGame extends HttpServlet {
 					if (currentGame.isWin(1)) {
 						out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You won!", "servlet5", currentGame.getGameBoard(), true));
 			    		out.close();
+			    		games.remove(gameID);
 			    		return;
 					}
 				}

@@ -22,10 +22,16 @@ public class OnlineGameHandler extends GameHandler {
 	}
 	
 	public void setPlayer(HttpSession session, int player) {
-		if (player == FIRST_PLAYER)
+		if (player == FIRST_PLAYER) {
+			System.out.println("XDDD");
+			System.out.println(player1 == null);
+			player1 = new SessionHandler(session);
 			player1.setSession(session);
-		else if (player == SECOND_PLAYER)
+		}
+		else if (player == SECOND_PLAYER) {
+			player2 = new SessionHandler(session);
 			player2.setSession(session);
+		}
 	}
 	
 	public boolean isReadyToUpdate(int player) {
