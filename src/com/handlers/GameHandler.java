@@ -84,7 +84,6 @@ public class GameHandler {
 					else {
 						gameBoard[j][i] = -2; gameBoard[j + 1][i] = -2; gameBoard[j + 2][i] = -2; gameBoard[j + 3][i] = -2;
 					}
-					System.out.println("tu nie dzial1");
 					return true;
 				}
 			}
@@ -103,7 +102,6 @@ public class GameHandler {
 					else {
 						gameBoard[i][j] = -2; gameBoard[i][j + 1] = -2; gameBoard[i][j + 2] = -2; gameBoard[i][j + 3] = -2;
 						}
-					System.out.println("tu nie dzial2");
 					return true;
 				}
 			}
