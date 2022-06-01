@@ -5,8 +5,9 @@ Connect Four Game is a 2-player game written in Java.
 ## Technologies used
 
 The project was written using the Servlet class.
-
 It allows the game board to be displayed on a webpage using HTML.
+
+In order to test functions the JUnit class was used.
 
 ## Game rules
 
