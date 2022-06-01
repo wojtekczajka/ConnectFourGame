@@ -6,8 +6,9 @@ Connect Four Game to gra dla 2 graczy napisana w Javie.
 
 Projekt był napisany przy użyciu klasy HttpServlet (która jest zdolna do przetwarzania żądań HTTP).
 
-Pozwala ona na wyświetlenie gry na stronie internetowej.
+Apache Tomcat (server)
 
+Heroku (platforma chmurowa)
 
 W celu testowania funkcji została użyta klasa JUnit.
 
