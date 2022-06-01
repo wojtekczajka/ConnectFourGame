@@ -1,7 +1,11 @@
 Gra Connect Four – Backlog
 
 Wymagania produktu:
-Połączenie klient-serwer
+Zapewnienie funkcjonalności:
+  Gra z CPU
+  Gra z innym graczem lokalnie
+  Gra z innym graczem zdalnie
+Połączenie klient-serwer(http)
 Prototyp planszy do gry i żetonów
 Możliwość stawiania żetonów
 Wykrycie przez grę wygranej użytkownika
