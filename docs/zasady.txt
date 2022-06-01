@@ -1,9 +1,10 @@
-Gra rozpoczyna się od pustej planszy, a gracze na zmianę umieszczają na niej kolorowe dyski. 
-Podczas każdej tury gracz może dołożyć kolejny dysk z góry lub, jeśli ma jakiekolwiek dyski swojego koloru w dolnym rzędzie, 
-usunąć (lub "wyskoczyć") dysk swojego koloru z dołu. Usunięcie dysku z dołu powoduje, 
-że każdy znajdujący się nad nim dysk zostaje przesunięty o jedno miejsce w dół, 
-co zmienia ich relacje z resztą planszy i zmienia możliwości połączenia. 
+Gra rozpoczyna się od pustej planszy, a gracze na zmianę umieszczają na niej kolorowe dyski.
+
+Podczas każdej tury gracz może dołożyć kolejny dysk z góry.
+
 Pierwszy gracz, który połączy cztery swoje dyski poziomo, pionowo lub po przekątnej, wygrywa grę.
+
+Jeśli żadnemu graczowi nie uda się połączyć czterech swoich dysków następuje remis.
 
 
 https://en.wikipedia.org/wiki/Connect_Four
