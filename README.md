@@ -2,9 +2,9 @@
 
 Connect Four Game to gra dla 2 graczy napisana w Javie.
 
-## Technologies used
+## Użyte technologie
 
-Projekt był napisany przy użyciu klasy Servlet.
+Projekt był napisany przy użyciu klasy HttpServlet.
 
 Pozwala ona na wyświetlenie gry na stronie internetowej.
 
