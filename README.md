@@ -20,6 +20,6 @@ The game can be played with a bot, by 2 players on a server or by 2 players loca
 ## Playing
 
 It can be accessed at:
-http://connect-four-gm.herokuapp.com/servlet5
+http://connect-four-gm.herokuapp.com/start
 
 ![The game board](https://user-images.githubusercontent.com/71210407/170267969-dfea623e-3586-4e40-8267-f9dcfa3d2280.PNG)
