@@ -22,8 +22,6 @@ public class HTMLHandler {
 				"<div class=\"window-body main-window\">\n" + 
 				"<div class=\"field-row-stacked\">\n" + 
 				"<form action=\"servlet1\">  \n" +
-				"<label for=\"login\">Login</label>\n" + 
-				"<input name=\"userLogin\" type=\"text\" />\n" + 
 				"</div>\n" + 
 				"<div>\n" + 
 				"<button type=\"submit\" name=\"gameChoice\" value=\"SinglePlayer\">Single-Player</button>\n" + 
@@ -49,6 +47,29 @@ public class HTMLHandler {
 		return html;
 	}
 	
+	public static String connectFourErrorPage(String contextPath, String msg) {
+		//String url = contextPath + "/xptheme.jpg";
+		String urlForCss = contextPath + "/style.css";
+		String html = 
+				"<html>\n" + 
+				"\n" + 
+				"<head>\n" + 
+				"    <link rel=\"stylesheet\" href=\""
+				+ urlForCss
+				+ "\">\n" + 
+				"</head>\n" + 
+				"<body class=\"hello-window\">" + 
+				"<div>"+
+				msg +
+				"</div>\n" +  
+				"<form action=\"start\">  \n" +
+				"<button type=\"submit\" name=\"gameChoice\" value=\"SinglePlayer\">Return</button>\n" +  
+				"</form>  \n" +
+				"</body>\n" + 
+				"</html>";
+		return html;
+	}
+	
 	public static String connectFourGamePage(String contextPath, String msg, String servlet, int[][] gameBoard, boolean isEndOfGame) {
 		
 		String urlForCss = contextPath + "/style.css";
@@ -61,14 +82,15 @@ public class HTMLHandler {
 				+ "\">\n" + 
 				"</head>\n" + 
 				"\n" + 
-				"<body>" +
-				"<div>Make a move...</div>" +
-				"<div class=\"window\" >\n" + 
+				"<body>";
+				if (!isEndOfGame)
+					html += "<div>Make a move...</div>";
+				html += "<div class=\"window\" >\n" + 
 				"<div class=\"title-bar title-bar-game\">\n" + 
 				"<div class=\"title-bar-text title-bar-game-text\">"
 				+ msg
-				+ "</div>\n" + 
-				"</div>\n" + 
+				+ "</div>" + 
+				"</div>\n" +
 				"<div class=\"window-body\">";
 		for (int i = 0; i < 6; i++) {
 			html += "<div class=\"row\">";
@@ -113,6 +135,69 @@ public class HTMLHandler {
 			html += "New Game";
 			html += "</button>";
 		}
+		html += "</form>  \n";
+		html += "</div>\n";
+		html +=	"</div>\n";
+		html +=	"</div>\n"; 
+		html +=	"</body>\n";
+		html +=	"</html>";
+		
+		return html;
+	}
+	
+public static String connectFourWaitGamePage(String contextPath, String msg, String servlet, int[][] gameBoard) {
+		
+		String urlForCss = contextPath + "/style.css";
+		String html = 
+				"<html>\n" + 
+				"\n" + 
+				"<head>\n" + 
+				"    <link rel=\"stylesheet\" href=\""
+				+ urlForCss
+				+ "\">\n" + 
+				"</head>\n" + 
+				"\n" + 
+				"<body>";
+				html += "<div class=\"window\" >\n" + 
+				"<div class=\"title-bar title-bar-game\">\n" + 
+				"<div class=\"title-bar-text title-bar-game-text\">"
+				+ msg
+				+ "</div>" + 
+				"</div>\n" +
+				"<div class=\"window-body\">";
+		for (int i = 0; i < 6; i++) {
+			html += "<div class=\"row\">";
+			for(int j = 0; j < 7; j++) {
+				html += "<div ";
+				if(gameBoard[i][j] == 1) {
+					html += "class=\"playerOne\"";
+							
+				}
+				else if(gameBoard[i][j] == -1) {
+					html += "class=\"playerTwo\"";
+							
+				}
+				else if(gameBoard[i][j] == 2) {
+					html += "class=\"playerOneWin\"";
+				}
+				else if(gameBoard[i][j] == -2) {
+					html += "class=\"playerTwoWin\"";
+				}
+				else {
+					html += "class=\"empty\"";
+				}
+				html += "></div>";
+			}
+			html += "</div>";
+		}
+		
+		html += "<div class=\"buttons\">";
+		html += "<form action=\"";
+		html +=	servlet;
+		html += "\">";
+		html += "<button type=\"submit\"\">";
+		html += "Refresh";
+		html += "</button>";
 		html += "</form>  \n";
 		html += "</div>\n";
 		html +=	"</div>\n";

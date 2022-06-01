@@ -45,16 +45,12 @@ public class LocalGame extends HttpServlet {
     public GameHandler getGame(String userLogin) {
     	return games.get(userLogin);
     }
-    
-//    public void setNewLocalGame(HttpSession session) {
-//    	game = new Game();
-//    	session.setAttribute("gameState", "player1Move");
-//    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 	    PrintWriter out = response.getWriter();
@@ -70,46 +66,54 @@ public class LocalGame extends HttpServlet {
 	    
 	    if (gameState.equals("startNewGame")) {
 	    	session.setAttribute("gameState", "player1Move");
-	    	out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Player1 move", "servlet3", userGame.getGameBoard(), false));
+	    	out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Player1 move", "local_game", userGame.getGameBoard(), false));
+	    	out.close();
+	    	return;
 	    }
 	    if (userGame.isGameBoardFull()) {
-	    	out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Draw", "servlet5", userGame.getGameBoard(), true));
+	    	out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Draw", "start", userGame.getGameBoard(), true));
 	    	out.close();
 	    	return;
 	    }
 	    else if (session.getAttribute("gameState").equals("player1Move")) {
 	    		if (userGame.makeMove(Integer.valueOf(colChoice), 1) == 0) {
-	    			out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong Player1 move, repeat again", "servlet3", userGame.getGameBoard(), false));
+	    			out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong Player1 move, repeat again", "local_game", userGame.getGameBoard(), false));
 		    		out.close();
 		    		return;
 	    		}
 	    		if (userGame.isWin(1)) {
-	    			out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Player1 win!", "servlet5", userGame.getGameBoard(), true));
+	    			out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Player1 win!", "start", userGame.getGameBoard(), true));
 		    		session.setAttribute("gameState", "startNewGame");
 		    		games.remove(gameID);
 	    		}
 	    		else {
-	    			out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Player2 move", "servlet3", userGame.getGameBoard(), false));
+	    			out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Player2 move", "local_game", userGame.getGameBoard(), false));
 	    			session.setAttribute("gameState", "player2Move");
 	    		}
 	    }
 	    else if (session.getAttribute("gameState").equals("player2Move")) {
 	    	if (userGame.makeMove(Integer.valueOf(colChoice), -1) == 0) {
-    			out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong Player2 move, repeat again", "servlet3", userGame.getGameBoard(), false));
+    			out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong Player2 move, repeat again", "local_game", userGame.getGameBoard(), false));
 	    		out.close();
 	    		return;
     		}
     		if (userGame.isWin(-1)) {
-    			out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Player2 win!", "servlet3", userGame.getGameBoard(), true));
+    			out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Player2 win!", "local_game", userGame.getGameBoard(), true));
 	    		session.setAttribute("gameState", "startNewGame");
 	    		games.remove(gameID);
     		}
     		else {
-    			out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Player1 move", "servlet3", userGame.getGameBoard(), false));
+    			out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Player1 move", "local_game", userGame.getGameBoard(), false));
     			session.setAttribute("gameState", "player1Move");
     		}
 	    }
 	    out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			PrintWriter out = response.getWriter();
+        	out.print(HTMLHandler.connectFourErrorPage(request.getContextPath(), "Something went wrong, press return to go back to the start page"));
+        	out.close();
+		}
 	}
 
 	/**

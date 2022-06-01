@@ -1,6 +1,7 @@
 package com.servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.handlers.HTMLHandler;
+
 /**
  * Servlet implementation class SessionCreator
  */
@@ -19,7 +22,7 @@ public class SessionCreator extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private ArrayList<HttpSession> usersInLobby = new ArrayList<HttpSession>();
-    private int gameID = 0;  
+    private long gameID = 0;  
     
     /**
      * @see HttpServlet#HttpServlet()
@@ -36,11 +39,9 @@ public class SessionCreator extends HttpServlet {
 		
 		response.setContentType("text/html"); // Setting the content type to text
         
-        String userLogin = request.getParameter("userLogin"); 
         String gameChoice = request.getParameter("gameChoice");
         
         HttpSession session = request.getSession();
-        session.setAttribute("userLogin", userLogin);
         session.setAttribute("gameChoice", gameChoice);
         
         if (gameChoice.equals("MultiPlayer")) {
@@ -49,45 +50,49 @@ public class SessionCreator extends HttpServlet {
         		usersInLobby.add(session);
         		session.removeAttribute("gameID");
 				while (true) {
-					if (counter == 15) {
+					if (counter == 30) {
 						usersInLobby.remove(session);
+						PrintWriter out = response.getWriter();
+						out.print(HTMLHandler.connectFourErrorPage(request.getContextPath(),  "Waiting for opponent timeout :("));
 						return;
 					}
 					System.out.println(session.getAttribute("gameID") == null);
 					if (usersInLobby.size() > 1 && session.getAttribute("gameID") == null) {
 						usersInLobby.remove(session);
-						session.setAttribute("gameID", gameID);
-						session.setAttribute("move", "true");
-						session.setAttribute("startingPlayer", userLogin);
+						session.setAttribute("gameID", Long.toString(gameID));
+						session.setAttribute("waitingForMove", "false");
+						session.setAttribute("makeMove", "true");
+						session.setAttribute("player", "player1");
 						HttpSession opponentSession = usersInLobby.remove(0);
-						opponentSession.setAttribute("gameID", Integer.toString(gameID));
-						opponentSession.setAttribute("move", "false");
-						opponentSession.setAttribute("startingPlayer", userLogin);
+						opponentSession.setAttribute("gameID", Long.toString(gameID));
+						opponentSession.setAttribute("waitingForMove", "true");
+						opponentSession.setAttribute("makeMove", "false");
+						opponentSession.setAttribute("player", "player2");
 						gameID += 1;
 					}
 					if (session.getAttribute("gameID") != null) 
 			            break; // IMPORTANT BREAK !!!
-					Thread.sleep(1000);	
+					Thread.sleep(500);	
 					counter++;
 				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/servlet4");
+        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/multi_player");
             dispatcher.forward(request, response);
         }
         else if(gameChoice.equals("SinglePlayer")) {
-        	session.setAttribute("gameID", Integer.toString(gameID));
+        	session.setAttribute("gameID", Long.toString(gameID));
         	gameID += 1;
-        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/servlet2");
+        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/single_game");
         	dispatcher.forward(request, response);
         }
         else {
         	session.setAttribute("gameState", "startNewGame");
-        	session.setAttribute("gameID", Integer.toString(gameID));
+        	session.setAttribute("gameID", Long.toString(gameID));
         	gameID += 1;
-        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/servlet3");
+        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/local_game");
             dispatcher.forward(request, response);
         }
 	}

@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.handlers.OnlineGameHandler;
-import com.handlers.OnlineGameHandler;
+import com.handlers.GameHandler;
 import com.handlers.HTMLHandler;
+import com.handlers.PlayersHandler;
 
 /**
  * Servlet implementation class OnlineGame
@@ -24,7 +24,8 @@ import com.handlers.HTMLHandler;
 public class OnlineGame extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	private Map<String, OnlineGameHandler> games;
+	private Map<String, GameHandler> games;
+	private Map<String, PlayersHandler> players;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -32,6 +33,7 @@ public class OnlineGame extends HttpServlet {
     public OnlineGame() {
         super();
         games = new TreeMap<>();
+        players = new TreeMap<>();
     }
     
     public boolean isExistingGame(String gameID) {
@@ -40,148 +42,175 @@ public class OnlineGame extends HttpServlet {
     	return true;
     }
     
-    public OnlineGameHandler getGame(String gameID) {
+    public boolean isExistingPayers(String gameID) {
+    	if(players.get(gameID) == null)
+    		return false;
+    	return true;
+    }
+
+    public GameHandler getGame(String gameID) {
     	return games.get(gameID);
     }
     
-    public OnlineGameHandler putNewGame(String gameID) {
-    	OnlineGameHandler newGame = new OnlineGameHandler();
+    public PlayersHandler getPlayers(String gameID) {
+    	return players.get(gameID);
+    }
+    
+    public GameHandler putNewGame(String gameID) {
+    	GameHandler newGame = new GameHandler();
     	games.put(gameID, newGame);
     	return newGame;
+    }
+    
+    public PlayersHandler putNewPlayers(String gameID) {
+    	PlayersHandler p = new PlayersHandler();
+    	players.put(gameID, p);
+    	return p;
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("text/html");
-	    PrintWriter out = response.getWriter();
-		HttpSession session = request.getSession(false);
-		String colChoice = request.getParameter("colChoice");
-		String gameID = String.valueOf(session.getAttribute("gameID"));
-		String userLogin = (String) session.getAttribute("userLogin");
-		String startingPlayerLogin = (String) session.getAttribute("startingPlayer");
-		OnlineGameHandler currentGame;
-		String player1Login = "kkk";
-		String player2Login = "ddd";
-		
-		if (!isExistingGame(gameID)) 
-			currentGame = putNewGame(gameID);
-		else
-			currentGame = getGame(gameID);
-		
-		if (userLogin == startingPlayerLogin) {
-			System.out.println("co ja robie tu");
-			if (!currentGame.isSet()) {
-				session.setAttribute("showGameBoard", "true");
-				session.setAttribute("updateGameBoard", "false");
-				currentGame.setPlayer(session, OnlineGameHandler.FIRST_PLAYER);
-			}
-		} 
-		else {
-			if (!currentGame.isSet()) {
-				session.setAttribute("showGameBoard", "false");
-				session.setAttribute("updateGameBoard", "false");
-				currentGame.setPlayer(session, OnlineGameHandler.SECOND_PLAYER);
-			}			
+		try {
+			
+			response.setContentType("text/html");
+		    PrintWriter out = response.getWriter();
+		    
+		    PlayersHandler currentPlayers;
+		    
+		    HttpSession session = request.getSession();
+		    String gameID = (String) session.getAttribute("gameID");
+		    String player = (String) session.getAttribute("player");
+		    String colChoice = request.getParameter("colChoice");
+		    
+		    GameHandler game;
+		    
+		    if (!isExistingGame(gameID)) {
+		    	game = putNewGame(gameID);
+		    }
+		    else {
+		    	game = getGame(gameID);
+		    }
+		    
+		    if (!isExistingPayers(gameID)) {
+		    	currentPlayers = putNewPlayers(gameID);
+		    }
+		    else {
+		    	currentPlayers = getPlayers(gameID);
+		    }
+		    
+		    if (currentPlayers.player1.makeMove == false && currentPlayers.player1.waitingForMove == false && currentPlayers.player1.readyForMove == false) {
+		    	currentPlayers.player1.makeMove = true;
+		    	currentPlayers.player1.waitingForMove = false;
+		    	currentPlayers.player1.readyForMove = false;
+		    	players.put(gameID, currentPlayers);
+		    	out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You are playing online", "multi_player", game.getGameBoard(), false));
+		    	return; 	
+		    }
+		    
+		    if (currentPlayers.player2.makeMove == false && currentPlayers.player2.waitingForMove == false && currentPlayers.player2.readyForMove == false) {
+		    	currentPlayers.player2.makeMove = false;
+		    	currentPlayers.player2.waitingForMove = true;
+		    	players.put(gameID, currentPlayers);
+		    	out.print(HTMLHandler.connectFourWaitGamePage(request.getContextPath(), "You are playing online", "multi_player", game.getGameBoard()));
+		    	return;
+		    }
+		    
+		    int counter = 0;
+		    
+		    while (counter < 15) {
+		    	if (session.getAttribute("player").equals("player1")) {
+		    		if (currentPlayers.player1.makeMove == true && currentPlayers.player2.waitingForMove == true) {
+		    			System.out.println("1 if");
+		    			currentPlayers.player1.waitingForMove = true;
+		    			currentPlayers.player1.makeMove = false;
+		    			currentPlayers.player1.readyForMove = false;
+		    			currentPlayers.player2.readyForMove = true;
+		    			currentPlayers.player2.waitingForMove = false;
+		    			players.put(gameID, currentPlayers);
+		    			if (game.makeMove(Integer.valueOf(colChoice), 1) == 0) {
+		    				out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong move, repeat again", "multi_player", game.getGameBoard(), false));
+		    	   		 	return;
+		    			}
+		    			if (game.isWin(1)) {
+		    				out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You win", "start", game.getGameBoard(), true));
+		   		    	 	return;
+		    			}
+		    			out.print(HTMLHandler.connectFourWaitGamePage(request.getContextPath(), "You are playing online", "multi_player", game.getGameBoard()));
+		    			return;
+		    		}
+		    		if (currentPlayers.player1.waitingForMove == true) {
+		    			System.out.println("2 if");
+				    	out.print(HTMLHandler.connectFourWaitGamePage(request.getContextPath(), "You are playing online", "multi_player", game.getGameBoard()));
+				    	return;
+		    		}
+		    		if (currentPlayers.player1.readyForMove == true) {
+		    			if (game.isWin(-1)) {
+		    				out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You lose", "start", game.getGameBoard(), true));
+		   		    	 	games.remove(gameID);
+		   		    	 	return;
+		    			}
+		    			if (game.isGameBoardFull()) {
+		    				out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You win", "Draw", game.getGameBoard(), true));
+		   		    	 	games.remove(gameID);
+		   		    	 	return;
+		    			}
+		    			System.out.println("3 if");
+		    			out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You are playing online", "multi_player", game.getGameBoard(), false));
+		    			currentPlayers.player1.readyForMove = false;
+		    			currentPlayers.player1.makeMove = true;
+		    			return;
+		    		}
+		    	}
+		    	else {
+		    		if (currentPlayers.player2.makeMove == true) {
+		    			System.out.println("4 if");
+		    			currentPlayers.player2.waitingForMove = true;
+		    			currentPlayers.player2.makeMove = false;
+		    			currentPlayers.player2.readyForMove = false;
+		    			currentPlayers.player1.readyForMove = true;
+		    			currentPlayers.player1.waitingForMove = false;
+		    			game.makeMove(Integer.valueOf(colChoice), -1);
+		    			if (game.isWin(-1)) {
+		    				out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You win", "start", game.getGameBoard(), true));
+		   		    	 	return;
+		    			}
+		    			if (game.isGameBoardFull()) {
+		    				out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You win", "Draw", game.getGameBoard(), true));
+		   		    	 	return;
+		    			}
+		    			out.print(HTMLHandler.connectFourWaitGamePage(request.getContextPath(), "You are playing online", "multi_player", game.getGameBoard()));
+		    			return;
+		    		}
+		    		if (currentPlayers.player2.waitingForMove == true) {
+		    			System.out.println("5 if");
+				    	out.print(HTMLHandler.connectFourWaitGamePage(request.getContextPath(), "You are playing online", "multi_player", game.getGameBoard()));
+				    	return;
+		    		}
+		    		if (currentPlayers.player2.readyForMove == true) {
+		    			System.out.println("6 if");
+		    			if (game.isWin(2)) {
+		    				out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You lose", "start", game.getGameBoard(), true));
+		   		    	 	games.remove(gameID);
+		   		    	 	return;
+		    			}
+		    			out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You are playing online", "multi_player", game.getGameBoard(), false));
+		    			currentPlayers.player2.readyForMove = false;
+		    			currentPlayers.player2.makeMove = true;
+		    			return;
+		    		}
+		    	}
+		    	counter++;
+		    }
+		    
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			PrintWriter out = response.getWriter();
+        	out.print(HTMLHandler.connectFourErrorPage(request.getContextPath(), "Something went wrong, press return to go back to the start page"));
+        	out.close();
 		}
-		
-		while (true) {
-			if (userLogin != startingPlayerLogin) {
-				if (currentGame.isReadyToUpdate(OnlineGameHandler.SECOND_PLAYER)) {
-					
-					if (currentGame.isWin(1)) {
-						out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "You lost, " + player1Login + "win", "servlet5", currentGame.getGameBoard(), true));
-						out.close();
-						games.remove(gameID);
-						return;
-					}
-					
-					if (currentGame.makeMove(Integer.valueOf(colChoice), -1) == 0) {
-						out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong move, repeat again", "servlet4", currentGame.getGameBoard(), false));
-			    		out.close();
-			    		return;
-					}
-					
-					currentGame.updatePlayer("updateGameBoard", "false", OnlineGameHandler.SECOND_PLAYER);
-					currentGame.updatePlayer("showGameBoard", "true", OnlineGameHandler.FIRST_PLAYER);
-					
-					if (currentGame.isWin(-1)) {
-						out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You won!", "servlet5", currentGame.getGameBoard(), true));
-			    		out.close();
-			    		games.remove(gameID);
-			    		return;
-					}
-				}
-				if (currentGame.isReadyToShow(OnlineGameHandler.SECOND_PLAYER)) {
-					
-					if (currentGame.isWin(1)) {
-						out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "You lost, " + player1Login + "win", "servlet5", currentGame.getGameBoard(), true));
-						out.close();
-						games.remove(gameID);
-						return;
-					}
-					
-					currentGame.updatePlayer("updateGameBoard", "true", OnlineGameHandler.SECOND_PLAYER);
-					currentGame.updatePlayer("showGameBoard", "false", OnlineGameHandler.SECOND_PLAYER);
-					
-					out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Playing against " + player1Login, "servlet4", currentGame.getGameBoard(), false));
-					out.close();
-					return;
-				}
-			}
-			else {
-				if (currentGame.isReadyToUpdate(OnlineGameHandler.FIRST_PLAYER)) {
-					
-					if (currentGame.isWin(-1)) {
-						out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "You lost, " + player2Login + "win", "servlet5", currentGame.getGameBoard(), true));
-						out.close();
-						games.remove(gameID);
-						return;
-					}
-					
-					if (currentGame.makeMove(Integer.valueOf(colChoice), 1) == 0) {
-						out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong move, repeat again", "servlet4", currentGame.getGameBoard(), false));
-			    		out.close();
-			    		games.remove(gameID);
-			    		return;
-					}
-					
-					currentGame.updatePlayer("updateGameBoard", "false", OnlineGameHandler.FIRST_PLAYER);
-					currentGame.updatePlayer("showGameBoard", "true", OnlineGameHandler.SECOND_PLAYER);
-					
-					if (currentGame.isWin(1)) {
-						out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You won!", "servlet5", currentGame.getGameBoard(), true));
-			    		out.close();
-			    		games.remove(gameID);
-			    		return;
-					}
-				}
-				if (currentGame.isReadyToShow(OnlineGameHandler.FIRST_PLAYER)) {
-					if (currentGame.isWin(-1)) {
-						out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "You lost, " + player2Login + "win", "servlet5", currentGame.getGameBoard(), true));
-						out.close();
-						return;
-					}
-					
-					currentGame.updatePlayer("updateGameBoard", "true", OnlineGameHandler.FIRST_PLAYER);
-					currentGame.updatePlayer("showGameBoard", "false", OnlineGameHandler.FIRST_PLAYER);
-					
-					out.println(HTMLHandler.connectFourGamePage(request.getContextPath(), "Playing against " + player2Login, "servlet4", currentGame.getGameBoard(), false));
-					out.close();
-					return;
-				}
-			}
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-		}	
 	}
 
 	/**

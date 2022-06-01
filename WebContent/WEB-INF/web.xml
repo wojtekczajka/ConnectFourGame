@@ -18,7 +18,7 @@
     
 <servlet-mapping>  
 <servlet-name>s2</servlet-name>  
-<url-pattern>/servlet2</url-pattern>  
+<url-pattern>/single_game</url-pattern>  
 </servlet-mapping>  
 
 <servlet>  
@@ -28,7 +28,7 @@
 
 <servlet-mapping>  
 <servlet-name>s3</servlet-name>  
-<url-pattern>/servlet3</url-pattern>  
+<url-pattern>/local_game</url-pattern>  
 </servlet-mapping>  
 
 <servlet>  
@@ -38,7 +38,7 @@
 
 <servlet-mapping>  
 <servlet-name>s4</servlet-name>  
-<url-pattern>/servlet4</url-pattern>  
+<url-pattern>/multi_player</url-pattern>  
 </servlet-mapping> 
 
 <servlet>  
@@ -48,7 +48,7 @@
   
 <servlet-mapping>  
 <servlet-name>s5</servlet-name>  
-<url-pattern>/servlet5</url-pattern>  
+<url-pattern>/start</url-pattern>  
 </servlet-mapping>  
  
 </web-app> 

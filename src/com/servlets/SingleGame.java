@@ -46,6 +46,19 @@ public class SingleGame extends HttpServlet {
     public GameHandler getGame(String userLogin) {
     	return games.get(userLogin);
     }
+    
+    public void makeRequestMove(GameHandler game, String colChoice, String gameID, String contextPatch, PrintWriter out) {
+    	if (game.makeMove(Integer.valueOf(colChoice), 1) == 0) {
+    		out.print(HTMLHandler.connectFourGamePage(contextPatch, "Wrong move, repeat again", "single_game", game.getGameBoard(), false));
+   		 	return;
+   	 	}
+   		 
+   	 	if (game.makeRandomMove(-1) == 0) {
+   		 	out.print(HTMLHandler.connectFourGamePage(contextPatch, "Draw", "start", game.getGameBoard(), true));
+	    	games.remove(gameID);
+	    	return;
+   	 	}
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -57,8 +70,7 @@ public class SingleGame extends HttpServlet {
 		     PrintWriter out = response.getWriter();
 		  
 		     HttpSession session = request.getSession(false);
-		  
-		     String userLogin = (String) session.getAttribute("userLogin");
+		     
 		     String gameID = (String) session.getAttribute("gameID");
 		     String colChoice = request.getParameter("colChoice");
 
@@ -68,39 +80,42 @@ public class SingleGame extends HttpServlet {
 		     
 		     if (colChoice != null) {
 		    	 if (userGame.makeMove(Integer.valueOf(colChoice), 1) == 0) {
-		    		 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong move, repeat again", "servlet5", userGame.getGameBoard(), false));
+		    		 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong move, repeat again", "single_game", userGame.getGameBoard(), false));
 		    		 out.close();
 		    		 return;
 		    	 }
 		    		 
 		    	 if (userGame.makeRandomMove(-1) == 0) {
-		    		 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Draw", "servlet5", userGame.getGameBoard(), true));
-			    	 games.remove(userLogin);
+		    		 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Draw", "start", userGame.getGameBoard(), true));
+			    	 games.remove(gameID);
 			    	 return;
 		    	 }
 		     }
 		     
+		     
 		     if (userGame.isWin(1)) {
-		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You win", "servlet5", userGame.getGameBoard(), true));
-		    	 games.remove(userLogin);
+		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You win", "start", userGame.getGameBoard(), true));
+		    	 games.remove(gameID);
 		    	 
 		     }
 		     else if (userGame.isWin(-1)) {
-		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "CPU win", "servlet5", userGame.getGameBoard(), true));
-		    	 games.remove(userLogin);
+		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "CPU win", "start", userGame.getGameBoard(), true));
+		    	 games.remove(gameID);
 		     }
 		     else if (userGame.isGameBoardFull()) {
-		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Draw", "servlet5", userGame.getGameBoard(), true));
-		    	 games.remove(userLogin);
+		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Draw", "start", userGame.getGameBoard(), true));
+		    	 games.remove(gameID);
 		     }
 		     else {
-		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You are playing against the computer", "servlet2", userGame.getGameBoard(), false));
+		    	 out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You are playing against the computer", "single_game", userGame.getGameBoard(), false));
 		     }
 		     out.close();
             
         }
         catch (Exception e) {
-            e.printStackTrace();
+        	PrintWriter out = response.getWriter();
+        	out.print(HTMLHandler.connectFourErrorPage(request.getContextPath(), "Something went wrong, press return to go back to the start page"));
+        	out.close();
         }
 	}
 
