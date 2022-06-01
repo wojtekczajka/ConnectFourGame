@@ -133,8 +133,10 @@ public class OnlineGame extends HttpServlet {
 		    				out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "Wrong move, repeat again", "multi_player", game.getGameBoard(), false));
 		    	   		 	return;
 		    			}
+		    			GameHandler temp = game;
 		    			if (game.isWin(1)) {
 		    				out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You win", "start", game.getGameBoard(), true));
+		    				game = temp;
 		   		    	 	return;
 		    			}
 		    			out.print(HTMLHandler.connectFourWaitGamePage(request.getContextPath(), "You are playing online", "multi_player", game.getGameBoard()));
@@ -190,7 +192,9 @@ public class OnlineGame extends HttpServlet {
 		    		}
 		    		if (currentPlayers.player2.readyForMove == true) {
 		    			System.out.println("6 if");
+		    			game.printGameBoard();
 		    			if (game.isWin(2)) {
+		    				System.out.println("jestem tytaj");
 		    				out.print(HTMLHandler.connectFourGamePage(request.getContextPath(), "You lose", "start", game.getGameBoard(), true));
 		   		    	 	games.remove(gameID);
 		   		    	 	return;
